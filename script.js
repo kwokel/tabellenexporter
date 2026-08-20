@@ -407,14 +407,12 @@
 
   // ---------- brand presets ----------
   // Colours are an interpretation of each brand's public marketing style
-  // (warm coastal tones for HD Hotels, ocean/dune tones for Dunas Hotels &
-  // Resorts) — not pixel-extracted from their live CSS, since that wasn't
-  // accessible to this tool. Treat as a starting point and adjust the
-  // individual colour fields above if you have exact brand hex codes.
+  // (logo blue for HD Hotels, ocean/dune tones for Dunas Hotels &
+  // Resorts)
   const PRESETS = {
     hd: {
-      primary: '#13315c',
-      rowAlt: '#f3efe6',
+      primary: '#11263B',
+      rowAlt: '#f0eded',
       badgeGreat: '#f2d9a0',
       badgeGood: '#e7dcc8',
       badgeWarn: '#f1c9c3',
