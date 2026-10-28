@@ -3,7 +3,18 @@
   const cfg = window.SUPABASE_CONFIG || {};
   const box = document.getElementById('cloudSection');
   const $ = id => document.getElementById(id);
-  const flash = msg => window.tableApp.flash(msg);
+  // Meldungen direkt im Speicherbereich anzeigen (die allgemeine Statuszeile liegt weit unten)
+  function flash(msg, isError) {
+    const el = document.getElementById('cloudStatus');
+    el.textContent = msg;
+    el.classList.toggle('error', !!isError);
+    clearTimeout(flash._t);
+    if (!isError) flash._t = setTimeout(() => { el.textContent = ''; }, 3000);
+  }
+  function fail(error) {
+    console.error(error);
+    flash(t('cloudError') + ' ' + (error && (error.message || error.code) || ''), true);
+  }
 
   if (!window.supabase || !cfg.url || cfg.url.includes('DEIN-PROJEKT')) {
     box.style.display = 'none';
@@ -66,14 +77,14 @@
     const { data, error } = await sb.from('saved_tables')
       .select('id, name, created_by, created_by_email, updated_by_email, updated_at')
       .order('updated_at', { ascending: false });
-    if (error) { console.error(error); flash(t('cloudError')); return; }
+    if (error) { fail(error); return; }
     tables = data;
     renderList();
   }
 
   async function openTable(id) {
     const { data, error } = await sb.from('saved_tables').select('id, name, data').eq('id', id).single();
-    if (error) { console.error(error); flash(t('cloudError')); return; }
+    if (error) { fail(error); return; }
     window.tableApp.setState(data.data);
     currentId = data.id;
     $('cloudName').value = data.name;
@@ -82,6 +93,8 @@
   }
 
   async function save(asNew) {
+    flash(t('cloudSaving'));
+    try {
     const name = $('cloudName').value.trim() || t('cloudUntitled');
     const payload = { name, data: window.tableApp.getState() };
     let res;
@@ -90,18 +103,19 @@
     } else {
       res = await sb.from('saved_tables').insert(payload).select('id').single();
     }
-    if (res.error) { console.error(res.error); flash(t('cloudError')); return; }
+    if (res.error) { fail(res.error); return; }
     currentId = res.data.id;
     $('cloudName').value = name;
     flash(t('cloudSaved'));
     loadList();
+    } catch (e) { fail(e); }
   }
 
   async function deleteTable(row) {
     const ok = await window.tableApp.confirm(t('cloudConfirmDelete', { name: row.name }));
     if (!ok) return;
     const { error } = await sb.from('saved_tables').delete().eq('id', row.id);
-    if (error) { console.error(error); flash(t('cloudError')); return; }
+    if (error) { fail(error); return; }
     if (currentId === row.id) currentId = null;
     flash(t('cloudDeleted'));
     loadList();
@@ -114,7 +128,7 @@
       email,
       options: { shouldCreateUser: false, emailRedirectTo: location.origin + location.pathname }
     });
-    if (error) { console.error(error); flash(t('cloudLoginError')); return; }
+    if (error) { console.error(error); flash(t('cloudLoginError') + ' ' + error.message, true); return; }
     flash(t('cloudLinkSent'));
   };
   $('cloudLogoutBtn').onclick = (e) => { e.preventDefault(); sb.auth.signOut(); };

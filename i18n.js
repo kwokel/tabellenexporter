@@ -4,6 +4,7 @@
 (function () {
   const translations = {
     de: {
+      cloudSaving: 'Speichere…',
       cloudTitle: 'Gespeicherte Tabellen',
       cloudEmailPh: 'E-Mail-Adresse',
       cloudLogin: 'Login-Link senden',
@@ -99,6 +100,7 @@
       fileName: 'tabelle'
     },
     en: {
+      cloudSaving: 'Saving…',
       cloudTitle: 'Saved tables',
       cloudEmailPh: 'Email address',
       cloudLogin: 'Send login link',
@@ -193,6 +195,7 @@
       fileName: 'table'
     },
     es: {
+      cloudSaving: 'Guardando…',
       cloudTitle: 'Tablas guardadas',
       cloudEmailPh: 'Correo electrónico',
       cloudLogin: 'Enviar enlace de acceso',

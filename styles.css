@@ -470,3 +470,5 @@ select#badgeType { width: 100%; margin-bottom: 8px; }
 .cloud-item-info span { font-size: 11px; color: var(--tool-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cloud-item:hover { border-color: var(--tool-accent); }
 .cloud-del { border: none; background: none; color: var(--tool-danger); cursor: pointer; font-size: 16px; padding: 0 4px; }
+.cloud-status { margin: 0 0 6px; }
+.cloud-status.error { color: var(--tool-danger); }
