@@ -399,7 +399,7 @@ select#badgeType { width: 100%; margin-bottom: 8px; }
 .confirm-actions .btn { margin-bottom: 0; }
 
 /* ---------- Sprachumschalter ---------- */
-.lang-switch { display: flex; gap: 4px; justify-content: flex-end; margin-bottom: 8px; }
+.lang-switch { display: flex; gap: 4px; justify-content: flex-start; margin-bottom: 8px; }
 .lang-switch button {
   font: inherit; font-size: 12px; font-weight: 600;
   padding: 3px 8px; border: 1px solid var(--tool-border); border-radius: 6px;
@@ -472,3 +472,166 @@ select#badgeType { width: 100%; margin-bottom: 8px; }
 .cloud-del { border: none; background: none; color: var(--tool-danger); cursor: pointer; font-size: 16px; padding: 0 4px; }
 .cloud-status { margin: 0 0 6px; }
 .cloud-status.error { color: var(--tool-danger); }
+
+/* ---------- Design-Einstellungen unter der Tabelle ---------- */
+.design-panel {
+  margin-top: 24px;
+  background: var(--tool-panel);
+  border: 1px solid var(--tool-border);
+  border-radius: 10px;
+  padding: 20px 24px 8px;
+}
+.design-panel-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  margin-bottom: 14px;
+}
+.design-panel-head h2 { font-size: 15px; margin: 0; color: var(--tool-accent); }
+.btn-small { width: auto; padding: 6px 14px; margin: 0; }
+.design-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px 32px;
+}
+.design-card { margin-bottom: 14px; }
+.design-card h2 {
+  font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--tool-text-muted); margin: 0 0 10px;
+}
+@media (max-width: 900px) {
+  .main { position: static !important; box-shadow: none !important; }
+}
+.toolbar-status { margin: 0; font-size: 13px; font-weight: 600; }
+
+/* ==========================================================================
+   UI-Theme (betrifft nur die Bedienoberfläche, nicht die exportierte Tabelle)
+   ========================================================================== */
+:root, :root[data-theme="light"] {
+  --tool-bg: #f4f4fb;
+  --tool-panel: #ffffff;
+  --tool-panel-2: #f7f7fd;
+  --tool-input: #ffffff;
+  --tool-border: #e3e3f0;
+  --tool-text: #1b1b2f;
+  --tool-text-muted: #6c6c8a;
+  --tool-accent: #2563eb;
+  --tool-accent-dark: #1d4ed8;
+  --tool-accent-2: #f97316;
+  --tool-accent-soft: rgba(37, 99, 235, 0.10);
+  --tool-danger: #e5364f;
+  --tool-danger-soft: rgba(229, 54, 79, 0.10);
+  --tool-shadow: 0 1px 2px rgba(27,27,47,0.05), 0 8px 24px rgba(27,27,47,0.06);
+  --tool-gradient: linear-gradient(135deg, #1d4ed8 0%, #2563eb 45%, #0ea5e9 100%);
+  --tool-gradient-title: linear-gradient(120deg, #1d4ed8 0%, #2563eb 40%, #f97316 100%);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --tool-bg: #0f0f1a;
+  --tool-panel: #171726;
+  --tool-panel-2: #1e1e31;
+  --tool-input: #232338;
+  --tool-border: #2d2d45;
+  --tool-text: #ececf7;
+  --tool-text-muted: #9a9ab8;
+  --tool-accent: #4f8bff;
+  --tool-accent-dark: #3b7bff;
+  --tool-accent-2: #ff8a3d;
+  --tool-accent-soft: rgba(79, 139, 255, 0.16);
+  --tool-gradient: linear-gradient(135deg, #2563eb 0%, #3b82f6 45%, #0ea5e9 100%);
+  --tool-gradient-title: linear-gradient(120deg, #60a5fa 0%, #3b82f6 35%, #ff8a3d 100%);
+  --tool-danger: #ff5a70;
+  --tool-danger-soft: rgba(255, 90, 112, 0.14);
+  --tool-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+  color-scheme: dark;
+}
+
+body {
+  font-family: "Plus Jakarta Sans", -apple-system, "Segoe UI", Roboto, sans-serif;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Seitenleiste */
+.sidebar { background: var(--tool-panel); padding: 22px; }
+.sidebar-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.sidebar-top .lang-switch { margin: 0; }
+.sidebar h1 {
+  font-size: 21px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 6px;
+  background: var(--tool-gradient-title); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sidebar .sub { font-size: 13px; }
+.section h2, .design-card h2 { font-weight: 700; color: var(--tool-text-muted); letter-spacing: 0.08em; }
+
+/* Sprachumschalter als Segment-Control */
+.lang-switch { background: var(--tool-panel-2); border: 1px solid var(--tool-border); border-radius: 10px; padding: 3px; gap: 2px; }
+.lang-switch button { border: none; border-radius: 7px; padding: 4px 10px; opacity: 1; color: var(--tool-text-muted); }
+.lang-switch button:hover { color: var(--tool-text); }
+.lang-switch button.active { background: var(--tool-accent); color: #fff; box-shadow: 0 2px 8px rgba(37,99,235,0.35); }
+
+/* Hell/Dunkel-Schalter */
+.theme-toggle {
+  width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--tool-border); background: var(--tool-panel-2); color: var(--tool-text); cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+}
+.theme-toggle:hover { color: var(--tool-accent); background: var(--tool-accent-soft); }
+.theme-toggle:active { transform: scale(0.94); }
+.theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+
+/* Buttons */
+.btn {
+  background: var(--tool-panel-2); color: var(--tool-text); border-color: var(--tool-border);
+  border-radius: 10px; padding: 10px 14px; font-weight: 700;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.05s, filter 0.15s;
+}
+.btn:hover { background: var(--tool-accent-soft); border-color: var(--tool-accent); color: var(--tool-accent); }
+.btn-primary {
+  background: var(--tool-gradient); border: none; color: #fff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.30);
+}
+.btn-primary:hover { background: var(--tool-gradient); color: #fff; filter: brightness(1.08); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.40); }
+.btn-danger { background: transparent; color: var(--tool-danger); border-color: var(--tool-danger-soft); }
+.btn-danger:hover { background: var(--tool-danger-soft); color: var(--tool-danger); border-color: var(--tool-danger); }
+
+/* Eingabefelder */
+.row select, .row input[type="number"], .text-input, #importText {
+  background: var(--tool-input) !important; color: var(--tool-text); border: 1px solid var(--tool-border) !important;
+  border-radius: 8px !important; transition: border-color 0.15s, box-shadow 0.15s;
+}
+.row select:focus, .row input[type="number"]:focus, .text-input:focus, #importText:focus {
+  outline: none; border-color: var(--tool-accent) !important; box-shadow: 0 0 0 3px var(--tool-accent-soft);
+}
+.row input[type="color"] { border-radius: 8px; border-color: var(--tool-border); background: var(--tool-input); }
+input[type="range"], input[type="checkbox"] { accent-color: var(--tool-accent); }
+
+.status-msg { color: var(--tool-accent); }
+
+/* Vorschau-Bereich */
+.preview-toolbar .toolbar-title { font-weight: 600; }
+.canvas-frame {
+  /* Bleibt immer hell, damit die Vorschau dem Export entspricht */
+  --tool-border: #e3e3f0; --tool-text-muted: #6c6c8a; --tool-accent: #2563eb; --tool-accent-soft: rgba(37,99,235,0.08);
+  background: #ffffff; border-radius: 16px; box-shadow: var(--tool-shadow); border: 1px solid var(--tool-border);
+}
+:root[data-theme="dark"] .canvas-frame { border-color: transparent; }
+
+.design-panel { background: var(--tool-panel); border-radius: 16px; box-shadow: var(--tool-shadow); }
+.design-panel-head h2 {
+  font-size: 17px; font-weight: 800;
+  background: var(--tool-gradient-title); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
+/* Gespeicherte Tabellen */
+.cloud-item { background: var(--tool-panel-2); border-radius: 10px; }
+.cloud-item.active { border-color: var(--tool-accent); background: var(--tool-accent-soft); }
+
+/* Bestätigungsdialog */
+.confirm-box { background: var(--tool-panel); border: 1px solid var(--tool-border); border-radius: 16px; }
+.confirm-overlay { background: rgba(10, 10, 25, 0.55); backdrop-filter: blur(3px); }
+
+@media (max-width: 860px) {
+  .main { background: var(--tool-bg); }
+}
+
+.theme-toggle:hover { color: var(--tool-accent-2); background: rgba(249,115,22,0.12); }
+.status-msg { color: var(--tool-accent-2); font-weight: 600; }

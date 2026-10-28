@@ -4,6 +4,8 @@
 (function () {
   const translations = {
     de: {
+      themeToggle: 'Hell/Dunkel umschalten',
+      designTitle: 'Design',
       cloudSaving: 'Speichere…',
       cloudTitle: 'Gespeicherte Tabellen',
       cloudEmailPh: 'E-Mail-Adresse',
@@ -100,6 +102,8 @@
       fileName: 'tabelle'
     },
     en: {
+      themeToggle: 'Toggle light/dark',
+      designTitle: 'Design',
       cloudSaving: 'Saving…',
       cloudTitle: 'Saved tables',
       cloudEmailPh: 'Email address',
@@ -195,6 +199,8 @@
       fileName: 'table'
     },
     es: {
+      themeToggle: 'Cambiar claro/oscuro',
+      designTitle: 'Diseño',
       cloudSaving: 'Guardando…',
       cloudTitle: 'Tablas guardadas',
       cloudEmailPh: 'Correo electrónico',
@@ -335,6 +341,12 @@
   window.setLang = setLang;
 
   document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('themeToggle');
+    if (toggle) toggle.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('tabellenexporter-theme', next); } catch (e) { /* ignorieren */ }
+    });
     document.querySelectorAll('.lang-switch button').forEach(b => {
       b.addEventListener('click', () => setLang(b.dataset.lang));
     });
