@@ -397,3 +397,76 @@ select#badgeType { width: 100%; margin-bottom: 8px; }
   gap: 8px;
 }
 .confirm-actions .btn { margin-bottom: 0; }
+
+/* ---------- Sprachumschalter ---------- */
+.lang-switch { display: flex; gap: 4px; justify-content: flex-end; margin-bottom: 8px; }
+.lang-switch button {
+  font: inherit; font-size: 12px; font-weight: 600;
+  padding: 3px 8px; border: 1px solid var(--tool-border); border-radius: 6px;
+  background: transparent; color: inherit; cursor: pointer; opacity: 0.7;
+}
+.lang-switch button:hover { opacity: 1; }
+.lang-switch button.active { background: var(--tool-border); opacity: 1; }
+
+/* ---------- Bearbeiten direkt an der Tabelle (nicht im Export) ---------- */
+.toolbar-tools { display: flex; align-items: center; gap: 18px; flex-wrap: nowrap; margin-left: auto; }
+.toolbar-tools > * { flex: 0 0 auto; white-space: nowrap; }
+.toolbar-check { display: flex; width: auto; margin: 0; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+.badge-bar { display: flex; align-items: center; gap: 6px; font-family: inherit; }
+.badge-bar-label { font-size: 13px; color: var(--tool-text-muted); }
+.badge-bar .ds-badge { border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-family: inherit; font-size: 13px; padding: 3px 10px; }
+.badge-bar .ds-badge:hover { filter: brightness(0.95); box-shadow: 0 0 0 1px currentColor; }
+
+.table-editor {
+  display: grid;
+  grid-template-columns: minmax(min-content, 1fr) 28px;
+  gap: 8px;
+}
+.add-col-btn, .add-row-btn {
+  border: 1px dashed var(--tool-border);
+  background: transparent;
+  color: var(--tool-text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+.add-col-btn { font-size: 18px; }
+.add-row-btn { padding: 6px; }
+.add-col-btn:hover, .add-row-btn:hover {
+  border-color: var(--tool-accent);
+  color: var(--tool-accent);
+  background: rgba(26,77,58,0.05);
+}
+.editor-hint { margin-top: 14px; }
+/* Rahmen wächst mit breiten Tabellen mit, statt sie abzuschneiden */
+.canvas-frame { width: fit-content; min-width: 100%; }
+
+/* ---------- Feste Badge-Farben (heller Hintergrund, dunkle Schrift) ---------- */
+.ds-badge--green { background: #d9f2df; color: #1a6b3c; }
+.ds-badge--yellow { background: #fdf3c4; color: #7a5c00; }
+.ds-badge--orange { background: #fde3cc; color: #a14a0b; }
+.ds-badge--red { background: #fbdede; color: #b2333f; }
+.ds-badge--blue { background: #dbe8fb; color: #1f4f99; }
+.ds-badge--violet { background: #ebe0fa; color: #5b2d91; }
+.ds-badge--gray { background: #e8eaec; color: #4a5058; }
+
+/* ---------- Online-Speichern ---------- */
+.text-input {
+  width: 100%; padding: 8px 10px; margin-bottom: 8px;
+  border: 1px solid var(--tool-border); border-radius: 6px; font: inherit; font-size: 13px;
+}
+.cloud-user { font-size: 12.5px; color: var(--tool-text-muted); margin: 0 0 10px; word-break: break-all; }
+.cloud-user a { color: var(--tool-accent); }
+.cloud-list { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; max-height: 260px; overflow-y: auto; }
+.cloud-item {
+  display: flex; align-items: center; gap: 6px;
+  border: 1px solid var(--tool-border); border-radius: 6px; padding: 6px 8px;
+}
+.cloud-item.active { border-color: var(--tool-accent); background: rgba(26,77,58,0.05); }
+.cloud-item-info { flex: 1; min-width: 0; cursor: pointer; display: flex; flex-direction: column; }
+.cloud-item-info strong { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cloud-item-info span { font-size: 11px; color: var(--tool-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cloud-item:hover { border-color: var(--tool-accent); }
+.cloud-del { border: none; background: none; color: var(--tool-danger); cursor: pointer; font-size: 16px; padding: 0 4px; }

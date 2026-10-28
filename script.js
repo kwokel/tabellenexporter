@@ -72,7 +72,7 @@
           tr.remove();
           renderLayoutControls();
         } else {
-          flash('Mindestens eine Zeile muss bestehen bleiben.');
+          flash(t('minRow'));
         }
       };
     });
@@ -85,7 +85,7 @@
     for (let i = 0; i < n; i++) {
       const td = document.createElement('td');
       td.contentEditable = 'true';
-      td.textContent = 'Neuer Wert';
+      td.textContent = t('newValue');
       tr.appendChild(td);
     }
     const removeCell = document.createElement('td');
@@ -100,7 +100,7 @@
   document.getElementById('addCol').onclick = () => {
     const th = document.createElement('th');
     th.contentEditable = 'true';
-    th.textContent = 'Neue Spalte';
+    th.textContent = t('newColumn');
     const removeSpan = document.createElement('span');
     removeSpan.className = 'col-remove';
     removeSpan.textContent = '×';
@@ -113,7 +113,7 @@
     [...bodyRows.children].forEach(tr => {
       const td = document.createElement('td');
       td.contentEditable = 'true';
-      td.textContent = 'Wert';
+      td.textContent = t('value');
       // insert before the row-remove cell
       const removeCell = tr.querySelector('.row-remove-cell');
       tr.insertBefore(td, removeCell);
@@ -123,7 +123,7 @@
   };
 
   function removeColumn(index) {
-    if (colCount() <= 1) { flash('Mindestens eine Spalte muss bestehen bleiben.'); return; }
+    if (colCount() <= 1) { flash(t('minCol')); return; }
     headRow.children[index].remove();
     if (colGroup.children[index]) colGroup.children[index].remove();
     [...bodyRows.children].forEach(tr => {
@@ -143,13 +143,13 @@
       const clone = th.cloneNode(true);
       const rem = clone.querySelector('.col-remove');
       if (rem) rem.remove();
-      let label = clone.textContent.trim() || ('Spalte ' + (i + 1));
+      let label = clone.textContent.trim() || t('columnN', { n: i + 1 });
       if (label.length > 16) label = label.slice(0, 14) + '…';
 
       const row = document.createElement('div');
       row.className = 'row';
       const lab = document.createElement('label');
-      lab.textContent = 'Sp.' + (i + 1) + ': ' + label;
+      lab.textContent = t('columnN', { n: i + 1 });
       const input = document.createElement('input');
       input.type = 'number';
       input.min = '20';
@@ -175,12 +175,12 @@
       const firstTd = tr.children[0];
       let label = firstTd ? firstTd.textContent.trim() : '';
       if (label.length > 16) label = label.slice(0, 14) + '…';
-      if (!label) label = 'Zeile ' + (i + 1);
+      if (!label) label = t('rowN', { n: i + 1 });
 
       const row = document.createElement('div');
       row.className = 'row';
       const lab = document.createElement('label');
-      lab.textContent = 'Z.' + (i + 1) + ': ' + label;
+      lab.textContent = t('rowN', { n: i + 1 });
       const input = document.createElement('input');
       input.type = 'number';
       input.min = '20';
@@ -304,16 +304,16 @@
       parsed = parseImportText(text);
     } catch (err) {
       console.error(err);
-      flash('Fehler beim Einlesen der Daten.');
+      flash(t('parseError'));
       return;
     }
 
     if (!parsed || parsed.rows.length < 1) {
-      flash('Konnte keine Tabelle erkennen. Bitte Markdown- oder tab-getrennte Daten einfügen.');
+      flash(t('noTable'));
       return;
     }
 
-    showConfirm('Aktuelle Tabelle durch die eingefügten Daten ersetzen?').then(ok => {
+    showConfirm(t('confirmImport')).then(ok => {
       if (!ok) return;
       try {
         const header = parsed.rows[0];
@@ -356,10 +356,10 @@
         rebuildRemoveHandlers();
         remeasureColumnsToFixed();
         renderLayoutControls();
-        flash('Tabelle importiert (' + header.length + ' Spalten, ' + body.length + ' Zeilen).');
+        flash(t('imported', { cols: header.length, rows: body.length }));
       } catch (err) {
         console.error(err);
-        flash('Fehler beim Einfügen der Tabelle.');
+        flash(t('importError'));
       }
     });
   }
@@ -372,12 +372,10 @@
   };
 
   // ---------- badges ----------
-  document.getElementById('insertBadge').onclick = () => {
-    const type = document.getElementById('badgeType').value;
-    const labelMap = { great: 'Sehr gut', good: 'Gut', warn: 'Eingeschränkt' };
-    const span = document.createElement('span');
+  function insertBadge(type) {
+        const span = document.createElement('span');
     span.className = 'ds-badge ds-badge--' + type;
-    span.textContent = labelMap[type];
+    span.textContent = t('badge_' + type);
 
     const sel = window.getSelection();
     let range = savedRange;
@@ -390,20 +388,23 @@
       sel.removeAllRanges();
       sel.addRange(range);
     } else {
-      flash('Bitte zuerst in eine Zelle klicken.');
+      flash(t('clickCellFirst'));
       return;
     }
-    flash('Badge eingefügt.');
-  };
+    flash(t('badgeInserted'));
+  }
+
+  document.querySelectorAll('#badgeBar [data-badge]').forEach(btn => {
+    // mousedown verhindern, damit der Cursor in der Zelle bleibt
+    btn.addEventListener('mousedown', e => e.preventDefault());
+    btn.addEventListener('click', () => insertBadge(btn.dataset.badge));
+  });
 
   // ---------- style controls ----------
   const setVar = (name, val) => wrapper.style.setProperty(name, val);
 
   document.getElementById('colorPrimary').oninput = (e) => setVar('--color-primary', e.target.value);
   document.getElementById('colorRowAlt').oninput = (e) => setVar('--color-row-alt', e.target.value);
-  document.getElementById('colorBadgeGreat').oninput = (e) => setVar('--color-badge-great-bg', e.target.value);
-  document.getElementById('colorBadgeGood').oninput = (e) => setVar('--color-badge-good-bg', e.target.value);
-  document.getElementById('colorBadgeWarn').oninput = (e) => setVar('--color-badge-warn-bg', e.target.value);
 
   // ---------- brand presets ----------
   // Colours are an interpretation of each brand's public marketing style
@@ -415,17 +416,11 @@
     hd: {
       primary: '#13315c',
       rowAlt: '#f3efe6',
-      badgeGreat: '#c9edd4',
-      badgeGood: '#d9f2df',
-      badgeWarn: '#fbdede',
       font: "'Poppins', sans-serif"
     },
     dunas: {
       primary: '#155263',
       rowAlt: '#f2ede1',
-      badgeGreat: '#c9edd4',
-      badgeGood: '#d9f2df',
-      badgeWarn: '#fbdede',
       font: "'Nunito', sans-serif"
     }
   };
@@ -437,19 +432,13 @@
 
     setVar('--color-primary', p.primary);
     setVar('--color-row-alt', p.rowAlt);
-    setVar('--color-badge-great-bg', p.badgeGreat);
-    setVar('--color-badge-good-bg', p.badgeGood);
-    setVar('--color-badge-warn-bg', p.badgeWarn);
     setVar('--font-base', p.font);
 
     document.getElementById('colorPrimary').value = p.primary;
     document.getElementById('colorRowAlt').value = p.rowAlt;
-    document.getElementById('colorBadgeGreat').value = p.badgeGreat;
-    document.getElementById('colorBadgeGood').value = p.badgeGood;
-    document.getElementById('colorBadgeWarn').value = p.badgeWarn;
     document.getElementById('fontFamily').value = p.font;
 
-    flash('Preset angewendet — Farben bleiben einzeln änderbar.');
+    flash(t('presetApplied'));
   };
 
   document.getElementById('fontFamily').onchange = (e) => setVar('--font-base', e.target.value);
@@ -466,14 +455,11 @@
 
   // ---------- reset ----------
   document.getElementById('resetAll').onclick = () => {
-    showConfirm('Alle Design-Einstellungen zurücksetzen? (Inhalte bleiben erhalten)').then(ok => {
+    showConfirm(t('confirmReset')).then(ok => {
       if (!ok) return;
       const defaults = {
         '--color-primary': '#1a4d3a',
         '--color-row-alt': '#eaf5ec',
-        '--color-badge-great-bg': '#c9edd4',
-        '--color-badge-good-bg': '#d9f2df',
-        '--color-badge-warn-bg': '#fbdede',
         '--font-base': "'Cabin', sans-serif",
         '--font-size-base': '16px',
         '--radius-lg': '10px'
@@ -482,9 +468,6 @@
       document.getElementById('colorPreset').value = '';
       document.getElementById('colorPrimary').value = '#1a4d3a';
       document.getElementById('colorRowAlt').value = '#eaf5ec';
-      document.getElementById('colorBadgeGreat').value = '#c9edd4';
-      document.getElementById('colorBadgeGood').value = '#d9f2df';
-      document.getElementById('colorBadgeWarn').value = '#fbdede';
       document.getElementById('fontFamily').value = "'Cabin', sans-serif";
       document.getElementById('fontSize').value = 16;
       document.getElementById('fontSizeVal').textContent = '16px';
@@ -515,21 +498,21 @@
   }
 
   document.getElementById('exportPng').onclick = () => {
-    flash('Erzeuge PNG…');
+    flash(t('makingPng'));
     captureCanvas().then(canvas => {
       const link = document.createElement('a');
-      link.download = 'tabelle.png';
+      link.download = t('fileName') + '.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
-      flash('PNG heruntergeladen.');
+      flash(t('pngDone'));
     }).catch(err => {
       console.error(err);
-      flash('Fehler beim PNG-Export.');
+      flash(t('pngError'));
     });
   };
 
   document.getElementById('exportPdf').onclick = () => {
-    flash('Erzeuge PDF…');
+    flash(t('makingPdf'));
     captureCanvas().then(canvas => {
       const { jsPDF } = window.jspdf;
       const imgData = canvas.toDataURL('image/png');
@@ -546,11 +529,55 @@
         format: [widthMm, heightMm]
       });
       pdf.addImage(imgData, 'PNG', 0, 0, widthMm, heightMm);
-      pdf.save('tabelle.pdf');
-      flash('PDF heruntergeladen.');
+      pdf.save(t('fileName') + '.pdf');
+      flash(t('pdfDone'));
     }).catch(err => {
       console.error(err);
-      flash('Fehler beim PDF-Export.');
+      flash(t('pdfError'));
     });
   };
+  // Sprachwechsel: dynamisch erzeugte Labels neu aufbauen
+  document.addEventListener('langchange', () => { renderLayoutControls(); });
+
+  // ---------- Zustand für Online-Speichern (cloud.js) ----------
+  const CONTROL_IDS = ['colorPreset', 'colorPrimary', 'colorRowAlt', 'fontFamily', 'fontSize', 'radius', 'exportScale'];
+
+  function getState() {
+    const controls = {};
+    CONTROL_IDS.forEach(id => { const el = document.getElementById(id); if (el) controls[id] = el.value; });
+    return {
+      version: 1,
+      headHtml: headRow.innerHTML,
+      bodyHtml: bodyRows.innerHTML,
+      colsHtml: colGroup.innerHTML,
+      captionHtml: captionEl.innerHTML,
+      showCaption: document.getElementById('showCaption').checked,
+      wrapperStyle: wrapper.getAttribute('style') || '',
+      tableStyle: table.getAttribute('style') || '',
+      controls
+    };
+  }
+
+  function setState(st) {
+    headRow.innerHTML = st.headHtml;
+    bodyRows.innerHTML = st.bodyHtml;
+    colGroup.innerHTML = st.colsHtml;
+    captionEl.innerHTML = st.captionHtml || '';
+    const show = !!st.showCaption;
+    document.getElementById('showCaption').checked = show;
+    captionEl.style.display = show ? '' : 'none';
+    wrapper.setAttribute('style', st.wrapperStyle || '');
+    table.setAttribute('style', st.tableStyle || '');
+    Object.entries(st.controls || {}).forEach(([id, v]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = v;
+    });
+    const fs = document.getElementById('fontSize'), rd = document.getElementById('radius');
+    document.getElementById('fontSizeVal').textContent = fs.value + 'px';
+    document.getElementById('radiusVal').textContent = rd.value + 'px';
+    rebuildRemoveHandlers();
+    renderLayoutControls();
+  }
+
+  window.tableApp = { getState, setState, flash, confirm: showConfirm };
 })();

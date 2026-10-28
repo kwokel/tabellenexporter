@@ -16,76 +16,66 @@
 
   <!-- ===================== SIDEBAR ===================== -->
   <div class="sidebar">
-    <h1>Tabellen Export Tool</h1>
-    <p class="sub">Tabelle bearbeiten, Design anpassen, als PNG oder PDF exportieren.</p>
-
-    <div class="section">
-      <h2>Tabelle importieren</h2>
-      <textarea id="importText" rows="6" style="width:100%; font-family: monospace; font-size:12px; border:1px solid var(--tool-border); border-radius:6px; padding:8px; resize:vertical;" placeholder="Markdown-Tabelle oder aus Excel/Sheets kopierte Zellen hier einfügen…"></textarea>
-      <button class="btn btn-primary" id="importBtn" style="margin-top:8px;">Tabelle einfügen (ersetzt aktuelle)</button>
-      <p class="hint">Erkennt Markdown-Tabellen (inkl. **fett** und Ausrichtung über die Trennzeile) sowie tab-getrennte Daten. Ersetzt die komplette aktuelle Tabelle.</p>
+    <div class="lang-switch" role="group" aria-label="Sprache / Language / Idioma">
+      <button type="button" data-lang="de">DE</button>
+      <button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="es">ES</button>
     </div>
+    <h1 data-i18n="appTitle">Tabellen Export Tool</h1>
+    <p class="sub" data-i18n="appSub">Tabelle bearbeiten, Design anpassen, als PNG oder PDF exportieren.</p>
 
-    <div class="section">
-      <h2>Inhalt</h2>
-      <div class="checkbox-row">
-        <input type="checkbox" id="showCaption">
-        <label for="showCaption">Tabellentitel anzeigen</label>
+    <div class="section" id="cloudSection">
+      <h2 data-i18n="cloudTitle">Gespeicherte Tabellen</h2>
+      <div id="cloudLoggedOut">
+        <input type="email" id="cloudEmail" class="text-input" data-i18n-placeholder="cloudEmailPh" placeholder="E-Mail-Adresse">
+        <button class="btn btn-primary" id="cloudLoginBtn" data-i18n="cloudLogin">Login-Link senden</button>
+        <p class="hint" data-i18n="cloudLoginHint">Du bekommst einen Anmeldelink per E-Mail. Nur eingeladene Teammitglieder können sich anmelden.</p>
       </div>
-      <div class="btn-row">
-        <button class="btn btn-half" id="addRow">+ Zeile</button>
-        <button class="btn btn-half" id="addCol">+ Spalte</button>
+      <div id="cloudLoggedIn" style="display:none;">
+        <p class="cloud-user"><span id="cloudUser"></span> · <a href="#" id="cloudLogoutBtn" data-i18n="cloudLogout">Abmelden</a></p>
+        <input type="text" id="cloudName" class="text-input" data-i18n-placeholder="cloudNamePh" placeholder="Name der Tabelle">
+        <div class="btn-row">
+          <button class="btn btn-primary btn-half" id="cloudSaveBtn" data-i18n="cloudSave">Speichern</button>
+          <button class="btn btn-half" id="cloudSaveNewBtn" data-i18n="cloudSaveNew">Als neue speichern</button>
+        </div>
+        <button class="btn" id="cloudNewBtn" data-i18n="cloudNew">Neue Tabelle beginnen</button>
+        <div id="cloudList" class="cloud-list"></div>
       </div>
-      <p class="hint">Zum Bearbeiten direkt in eine Zelle klicken. Beim Hover über eine Zeile bzw. Spaltenkopf erscheint ein × zum Entfernen.</p>
     </div>
 
     <div class="section">
-      <h2>Badge einfügen</h2>
-      <select id="badgeType">
-        <option value="great">Sehr gut (kräftig)</option>
-        <option value="good">Gut (hell)</option>
-        <option value="warn">Eingeschränkt</option>
-      </select>
-      <button class="btn" id="insertBadge">In Zelle einfügen</button>
-      <p class="hint">Cursor zuerst in die Zielzelle setzen, dann klicken.</p>
+      <h2 data-i18n="importTitle">Tabelle importieren</h2>
+      <textarea id="importText" rows="6" style="width:100%; font-family: monospace; font-size:12px; border:1px solid var(--tool-border); border-radius:6px; padding:8px; resize:vertical;" data-i18n-placeholder="importPlaceholder" placeholder="Markdown-Tabelle oder aus Excel/Sheets kopierte Zellen hier einfügen…"></textarea>
+      <button class="btn btn-primary" id="importBtn" style="margin-top:8px;" data-i18n="importBtn">Tabelle einfügen (ersetzt aktuelle)</button>
+      <p class="hint" data-i18n="importHint">Erkennt Markdown-Tabellen (inkl. **fett** und Ausrichtung über die Trennzeile) sowie tab-getrennte Daten. Ersetzt die komplette aktuelle Tabelle.</p>
     </div>
 
+
+
     <div class="section">
-      <h2>Farben</h2>
+      <h2 data-i18n="colorsTitle">Farben</h2>
       <div class="row">
-        <label for="colorPreset">Preset</label>
+        <label for="colorPreset" data-i18n="preset">Preset</label>
         <select id="colorPreset">
-          <option value="">Benutzerdefiniert</option>
+          <option value="" data-i18n="presetCustom">Benutzerdefiniert</option>
           <option value="hd">HD Hotels</option>
           <option value="dunas">Dunas Hotels &amp; Resorts</option>
         </select>
       </div>
       <div class="row">
-        <label for="colorPrimary">Primärfarbe (Header/Rahmen)</label>
+        <label for="colorPrimary" data-i18n="colorPrimary">Primärfarbe (Header/Rahmen)</label>
         <input type="color" id="colorPrimary" value="#1a4d3a">
       </div>
       <div class="row">
-        <label for="colorRowAlt">Zebra-Zeile</label>
+        <label for="colorRowAlt" data-i18n="colorRowAlt">Zebra-Zeile</label>
         <input type="color" id="colorRowAlt" value="#eaf5ec">
-      </div>
-      <div class="row">
-        <label for="colorBadgeGreat">Badge „Sehr gut"</label>
-        <input type="color" id="colorBadgeGreat" value="#c9edd4">
-      </div>
-      <div class="row">
-        <label for="colorBadgeGood">Badge „Gut"</label>
-        <input type="color" id="colorBadgeGood" value="#d9f2df">
-      </div>
-      <div class="row">
-        <label for="colorBadgeWarn">Badge „Eingeschränkt"</label>
-        <input type="color" id="colorBadgeWarn" value="#fbdede">
       </div>
     </div>
 
     <div class="section">
-      <h2>Typografie</h2>
+      <h2 data-i18n="typoTitle">Typografie</h2>
       <div class="row">
-        <label for="fontFamily">Schriftart</label>
+        <label for="fontFamily" data-i18n="fontFamily">Schriftart</label>
         <select id="fontFamily">
           <option value="'Cabin', sans-serif">Cabin</option>
           <option value="'Poppins', sans-serif">Poppins</option>
@@ -95,50 +85,50 @@
         </select>
       </div>
       <div class="row">
-        <label for="fontSize">Schriftgröße</label>
+        <label for="fontSize" data-i18n="fontSize">Schriftgröße</label>
         <input type="range" id="fontSize" min="12" max="22" value="16">
         <span class="val" id="fontSizeVal">16px</span>
       </div>
     </div>
 
     <div class="section">
-      <h2>Form</h2>
+      <h2 data-i18n="shapeTitle">Form</h2>
       <div class="row">
-        <label for="radius">Eckenradius</label>
+        <label for="radius" data-i18n="radius">Eckenradius</label>
         <input type="range" id="radius" min="0" max="24" value="10">
         <span class="val" id="radiusVal">10px</span>
       </div>
     </div>
 
     <div class="section">
-      <h2>Spaltenbreite</h2>
+      <h2 data-i18n="colWidthTitle">Spaltenbreite</h2>
       <div id="colWidthControls"></div>
-      <p class="hint">Wert in px pro Spalte, leer = automatische Breite.</p>
+      <p class="hint" data-i18n="colWidthHint">Wert in px pro Spalte, leer = automatische Breite.</p>
     </div>
 
     <div class="section">
-      <h2>Zeilenhöhe</h2>
+      <h2 data-i18n="rowHeightTitle">Zeilenhöhe</h2>
       <div id="rowHeightControls"></div>
-      <p class="hint">Wert in px pro Zeile, leer = automatische Höhe (passt sich dem Inhalt an).</p>
+      <p class="hint" data-i18n="rowHeightHint">Wert in px pro Zeile, leer = automatische Höhe (passt sich dem Inhalt an).</p>
     </div>
 
     <div class="section">
-      <h2>Export</h2>
+      <h2 data-i18n="exportTitle">Export</h2>
       <div class="row">
-        <label for="exportScale">Auflösung</label>
+        <label for="exportScale" data-i18n="exportScale">Auflösung</label>
         <select id="exportScale">
-          <option value="1">1× (Bildschirm)</option>
-          <option value="2" selected>2× (Druck/Retina)</option>
-          <option value="3">3× (hochauflösend)</option>
+          <option value="1" data-i18n="scale1">1× (Bildschirm)</option>
+          <option value="2" selected data-i18n="scale2">2× (Druck/Retina)</option>
+          <option value="3" data-i18n="scale3">3× (hochauflösend)</option>
         </select>
       </div>
-      <button class="btn btn-primary" id="exportPng">Als PNG exportieren</button>
-      <button class="btn btn-primary" id="exportPdf">Als PDF exportieren</button>
+      <button class="btn btn-primary" id="exportPng" data-i18n="exportPng">Als PNG exportieren</button>
+      <button class="btn btn-primary" id="exportPdf" data-i18n="exportPdf">Als PDF exportieren</button>
       <p class="status-msg" id="statusMsg"></p>
     </div>
 
     <div class="section">
-      <button class="btn btn-danger" id="resetAll">Alles zurücksetzen</button>
+      <button class="btn btn-danger" id="resetAll" data-i18n="resetAll">Alles zurücksetzen</button>
     </div>
 
     <p class="hint" style="text-align:center; margin-top:4px;">© 2026 Karsten Wokel</p>
@@ -147,10 +137,27 @@
   <!-- ===================== MAIN / PREVIEW ===================== -->
   <div class="main">
     <div class="preview-toolbar">
-      <span class="toolbar-title">Vorschau — wird 1:1 exportiert</span>
+      <span class="toolbar-title" data-i18n="previewTitle">Vorschau — wird 1:1 exportiert</span>
+      <div class="toolbar-tools">
+        <label class="toolbar-check">
+          <input type="checkbox" id="showCaption">
+          <span data-i18n="showCaption">Tabellentitel anzeigen</span>
+        </label>
+        <div class="badge-bar" id="badgeBar">
+          <span class="badge-bar-label" data-i18n="badgeLabel">Badge einfügen:</span>
+          <button type="button" class="ds-badge ds-badge--green" data-badge="green" data-i18n="badge_green">Grün</button>
+          <button type="button" class="ds-badge ds-badge--yellow" data-badge="yellow" data-i18n="badge_yellow">Gelb</button>
+          <button type="button" class="ds-badge ds-badge--orange" data-badge="orange" data-i18n="badge_orange">Orange</button>
+          <button type="button" class="ds-badge ds-badge--red" data-badge="red" data-i18n="badge_red">Rot</button>
+          <button type="button" class="ds-badge ds-badge--blue" data-badge="blue" data-i18n="badge_blue">Blau</button>
+          <button type="button" class="ds-badge ds-badge--violet" data-badge="violet" data-i18n="badge_violet">Violett</button>
+          <button type="button" class="ds-badge ds-badge--gray" data-badge="gray" data-i18n="badge_gray">Grau</button>
+        </div>
+      </div>
     </div>
 
     <div class="canvas-frame">
+      <div class="table-editor">
       <div id="exportWrapper">
         <div class="ds-table-wrapper">
           <table class="ds-table" id="dsTable">
@@ -171,41 +178,49 @@
                 <td contenteditable="true">El Museo Canario</td>
                 <td contenteditable="true">Vegueta, Las Palmas</td>
                 <td contenteditable="true">Prähistorie- und Anthropologie-Fans</td>
-                <td contenteditable="true"><span class="ds-badge ds-badge--warn">Eingeschränkt</span></td>
+                <td contenteditable="true"><span class="ds-badge ds-badge--red">Eingeschränkt</span></td>
                 <td class="row-remove-cell"><span class="row-remove">×</span></td>
               </tr>
               <tr>
                 <td contenteditable="true">Casa de Colón</td>
                 <td contenteditable="true">Vegueta, Las Palmas</td>
                 <td contenteditable="true">Familien, Entdeckergeschichte</td>
-                <td contenteditable="true"><span class="ds-badge ds-badge--great">Sehr gut</span></td>
+                <td contenteditable="true"><span class="ds-badge ds-badge--green">Sehr gut</span></td>
                 <td class="row-remove-cell"><span class="row-remove">×</span></td>
               </tr>
               <tr>
                 <td contenteditable="true">Museo Elder</td>
                 <td contenteditable="true">Puerto, Las Palmas</td>
                 <td contenteditable="true">Familien mit Kindern, Technikfans</td>
-                <td contenteditable="true"><span class="ds-badge ds-badge--good">Gut</span></td>
+                <td contenteditable="true"><span class="ds-badge ds-badge--blue">Gut</span></td>
                 <td class="row-remove-cell"><span class="row-remove">×</span></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+      <button type="button" class="add-col-btn" id="addCol" data-i18n-title="addCol" title="+ Spalte">+</button>
+      <button type="button" class="add-row-btn" id="addRow" data-i18n="addRow">+ Zeile</button>
+      </div>
+      <p class="hint editor-hint" data-i18n="contentHint">Zum Bearbeiten direkt in eine Zelle klicken. Beim Hover über eine Zeile bzw. Spaltenkopf erscheint ein × zum Entfernen.</p>
     </div>
   </div>
 </div>
 
 <div id="confirmOverlay" class="confirm-overlay">
   <div class="confirm-box">
-    <p id="confirmMessage">Aktion bestätigen?</p>
+    <p id="confirmMessage" data-i18n="confirmDefault">Aktion bestätigen?</p>
     <div class="confirm-actions">
-      <button id="confirmNo" class="btn btn-half">Abbrechen</button>
-      <button id="confirmYes" class="btn btn-primary btn-half">Ja, fortfahren</button>
+      <button id="confirmNo" class="btn btn-half" data-i18n="confirmNo">Abbrechen</button>
+      <button id="confirmYes" class="btn btn-primary btn-half" data-i18n="confirmYes">Ja, fortfahren</button>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="config.js"></script>
+<script src="i18n.js"></script>
 <script src="script.js"></script>
+<script src="cloud.js"></script>
 </body>
 </html>
